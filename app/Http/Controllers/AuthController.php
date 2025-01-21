@@ -13,21 +13,22 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:user,admin', // Menambahkan validasi untuk role
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => bcrypt($request->password),
+            'role' => $request->role,  // Menetapkan role yang dikirimkan
         ]);
 
-        return response()->json([
-            'message' => 'User registered successfully!',
-            'user' => $user,
-        ], 201);
+        $token = $user->createToken('AppToken')->plainTextToken;
+
+        return response()->json(['message' => 'User registered successfully', 'user' => $user, 'token' => $token], 201);
     }
 
     // Login
@@ -35,27 +36,25 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|string|email',
-            'password' => 'required|string',
+            'password' => 'required|string|min:8',
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        $user = User::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        $user = Auth::user();
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('AppToken')->plainTextToken;
 
-        return response()->json([
-            'message' => 'Login successful',
-            'token' => $token,
-            'user' => $user,
-        ]);
+        return response()->json(['message' => 'Login successful', 'user' => $user, 'token' => $token]);
     }
 
     // Logout
     public function logout(Request $request)
     {
-        $request->user()->tokens()->delete();
+        // Menghapus token yang digunakan untuk autentikasi
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json(['message' => 'Logged out successfully']);
     }
