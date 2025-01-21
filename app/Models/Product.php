@@ -16,6 +16,10 @@ class Product extends Model
         'quantity',
     ];
 
+    protected $casts = [
+        'price'=> 'float',
+    ];
+
     public function carts()
     {
         return $this->hasMany(Cart::class);

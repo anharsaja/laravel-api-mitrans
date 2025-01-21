@@ -41,16 +41,29 @@ use Illuminate\Support\Facades\Route;
 //     Route::delete('/cart/{id}', [CartController::class, 'destroy']);
 // });
 
+
+
 // Route untuk Admin hanya
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
+
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
 
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index']);  // Contoh route admin
+    Route::get('/admin', [AdminController::class, 'index']);
+    Route::post('/products', [ProductController::class, 'store']);
+    Route::put('/products/{id}', [ProductController::class, 'update']);
+    Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+    Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 });
 
 // Route untuk User hanya
 Route::middleware(['auth:sanctum', 'role:user'])->group(function () {
-    Route::get('/user', [UserController::class, 'index']);  // Contoh route user
+    Route::get('/user', [UserController::class, 'index']);
+    Route::get('/cart', [CartController::class, 'index']);
+    Route::post('/cart', [CartController::class, 'store']);
+    Route::put('/cart/{id}', [CartController::class, 'update']);
+    Route::delete('/cart/{id}', [CartController::class, 'destroy']);
+    Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 });
