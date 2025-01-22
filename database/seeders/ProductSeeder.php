@@ -14,24 +14,39 @@ class ProductSeeder extends Seeder
     public function run(): void
     {
         Product::create([
-            'name' => 'Product 1',
-            'description' => 'Description for Product 1',
-            'price' => 19.99,
-            'quantity' => 100,
+            'name' => 'Meja Makan Kayu Jati',
+            'description' => 'Meja makan berbahan kayu jati berkualitas tinggi, cocok untuk ruang makan Anda.',
+            'price' => 2500000, // Harga dalam Rupiah
+            'quantity' => 10,
         ]);
-
+        
         Product::create([
-            'name' => 'Product 2',
-            'description' => 'Description for Product 2',
-            'price' => 29.99,
-            'quantity' => 50,
+            'name' => 'Kursi Sofa Minimalis',
+            'description' => 'Sofa minimalis dengan bantalan empuk, cocok untuk ruang tamu Anda.',
+            'price' => 1500000, // Harga dalam Rupiah
+            'quantity' => 15,
         ]);
-
+        
         Product::create([
-            'name' => 'Product 3',
-            'description' => 'Description for Product 3',
-            'price' => 9.99,
-            'quantity' => 200,
+            'name' => 'Lemari Pakaian 2 Pintu',
+            'description' => 'Lemari pakaian dengan desain elegan dan kapasitas besar.',
+            'price' => 2000000, // Harga dalam Rupiah
+            'quantity' => 8,
         ]);
+        
+        Product::create([
+            'name' => 'Rak Buku Kayu',
+            'description' => 'Rak buku berbahan kayu solid dengan desain modern.',
+            'price' => 500000, // Harga dalam Rupiah
+            'quantity' => 20,
+        ]);
+        
+        Product::create([
+            'name' => 'Lampu Gantung Hias',
+            'description' => 'Lampu gantung dengan desain artistik untuk ruang makan atau ruang tamu.',
+            'price' => 350000, // Harga dalam Rupiah
+            'quantity' => 30,
+        ]);
+        
     }
 }
